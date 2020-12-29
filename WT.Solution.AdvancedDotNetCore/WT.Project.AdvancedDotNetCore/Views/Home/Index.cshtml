@@ -12,7 +12,7 @@
             <div class="card">
                 @if (string.IsNullOrEmpty(employee.Thumbnail))
                 {
-                    <div class="img text-center"><a asp-controller="Employee" asp-action="UploadProfilePicture" asp-route-employeeId="@employee.Id">Add<br />Profile Picture</a></div>
+                    <div class="img text-center"><a asp-controller="Employee" asp-action="UploadProfilePicture" asp-route-employeeId="@employee.Id">@localizer["AddProfilePicture"]</a></div>
                 }
                 else
                 {
