@@ -15,6 +15,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using WT.Project.AdvancedDotNetCore.Infrastructure;
+using WT.Project.AdvancedDotNetCore.Infrastructure.Extentions;
+using WT.Project.AdvancedDotNetCore.Infrastructure.Middlewares;
 using WT.Project.AdvancedDotNetCore.Services;
 
 namespace WT.Project.AdvancedDotNetCore
@@ -69,6 +71,10 @@ namespace WT.Project.AdvancedDotNetCore
             services.AddSingleton<IEmployees, Employees>();
 
             services.AddHostedService<ThumbnailGenerator>();
+
+            services.AddStartupTask<InformationStartupTask>();
+
+            services.AddTransient<NameRoutingMiddleware>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -88,7 +94,7 @@ namespace WT.Project.AdvancedDotNetCore
             app.UseStaticFiles();
 
             app.UseAuthentication();
-
+            app.UseNameRouting();
             app.UseRouting();
             app.UseRequestLocalization(app.ApplicationServices.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
             app.UseAuthorization();

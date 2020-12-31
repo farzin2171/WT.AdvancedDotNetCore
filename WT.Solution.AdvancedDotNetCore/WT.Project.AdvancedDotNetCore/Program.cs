@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using WT.Project.AdvancedDotNetCore.Infrastructure.Extentions;
 
 namespace WT.Project.AdvancedDotNetCore
 {
@@ -13,7 +14,7 @@ namespace WT.Project.AdvancedDotNetCore
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            CreateHostBuilder(args).Build().RunTasks().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

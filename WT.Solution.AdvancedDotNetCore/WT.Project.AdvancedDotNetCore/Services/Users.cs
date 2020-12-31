@@ -25,5 +25,13 @@ namespace WT.Project.AdvancedDotNetCore.Services
 
             return Task.FromResult(user.AsUser());
         }
+        public Task<User> WhereIdIs(int id)
+        {
+            return Task.FromResult(_users.FirstOrDefault(x => x.Id == id)?.AsUser());
+        }
+        public Task<User> WithName(string name)
+        {
+            return Task.FromResult(_users.FirstOrDefault(x => x.Username.Equals(name, StringComparison.OrdinalIgnoreCase))?.AsUser());
+        }
     }
 }
