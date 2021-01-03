@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using StackExchange.Redis;
 using WT.Project.AdvancedDotNetCore.Infrastructure;
 using WT.Project.AdvancedDotNetCore.Infrastructure.Extentions;
 using WT.Project.AdvancedDotNetCore.Infrastructure.Middlewares;
@@ -57,7 +58,7 @@ namespace WT.Project.AdvancedDotNetCore
                 });
             services.AddControllersWithViews(options =>
             {
-                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+                //options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
             }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -75,6 +76,23 @@ namespace WT.Project.AdvancedDotNetCore
             services.AddStartupTask<InformationStartupTask>();
 
             services.AddTransient<NameRoutingMiddleware>();
+
+            //services.AddSingleton<ICacheService, InMemoryCacheService>();
+
+            //To use Redis Cache 
+            // https://www.youtube.com/watch?v=jwek4w6als4
+            //1- install StackExchange.Redis
+            //2- install redis
+            //docker run -p 6379:6379 --name redis-master -e REDIS_REPLICATRION_MODE=master -e ALLOW_EMPTY_PASSWORD=yes bitnami/redis:latest
+            //https://redisdesktop.com/
+            //3- docker ps
+
+            services.AddSingleton<IConnectionMultiplexer>(x => ConnectionMultiplexer.Connect(Configuration.GetValue<string>("RedisConnection")));
+
+            services.AddSingleton<ICacheService, RedisCacheService>();
+
+            services.AddHostedService<RadisSubscriber>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -101,9 +119,8 @@ namespace WT.Project.AdvancedDotNetCore
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapDefaultControllerRoute();
+                endpoints.MapControllers();
             });
         }
     }
