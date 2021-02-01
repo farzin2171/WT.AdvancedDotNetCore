@@ -81,11 +81,16 @@ namespace WT.Project.AdvancedDotNetCore
 
             //To use Redis Cache 
             // https://www.youtube.com/watch?v=jwek4w6als4
+            //https://www.youtube.com/watch?v=KboCpJGa9ag&t=491s
             //1- install StackExchange.Redis
             //2- install redis
             //docker run -p 6379:6379 --name redis-master -e REDIS_REPLICATRION_MODE=master -e ALLOW_EMPTY_PASSWORD=yes bitnami/redis:latest
             //https://redisdesktop.com/
             //3- docker ps
+
+            //https://www.youtube.com/watch?v=Zo3T_See7iI&list=PLUOequmGnXxOgmSDWU7Tl6iQTsOtyjtwU&index=25
+            //https://www.youtube.com/watch?v=ESdvXlrG9zQ
+            //https://www.youtube.com/watch?v=Zo3T_See7iI&list=PLUOequmGnXxOgmSDWU7Tl6iQTsOtyjtwU&index=25
 
             services.AddSingleton<IConnectionMultiplexer>(x => ConnectionMultiplexer.Connect(Configuration.GetValue<string>("RedisConnection")));
 
